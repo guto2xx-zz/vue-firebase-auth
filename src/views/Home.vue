@@ -1,20 +1,25 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png" />
-    <HelloWorld msg="Welcome to Your Vue.js App" />
+    <Pokemon :pokemonList="pokemonList" />
     <button @click="sair">Sair</button>
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
+import Pokemon from "@/components/Pokemon.vue"
 import firebase from "firebase"
-import HelloWorld from "@/components/HelloWorld.vue"
+import axios from "axios"
 
 export default {
   name: "Home",
   components: {
-    HelloWorld,
+    Pokemon,
+  },
+  data() {
+    return {
+      pokemonList: null,
+    }
   },
   methods: {
     sair: function() {
@@ -25,6 +30,11 @@ export default {
           this.$router.replace("login")
         })
     },
+  },
+  mounted() {
+    axios.get("https://pokeapi.co/api/v2/pokemon/?limit=999").then(response => {
+      this.pokemonList = response.data
+    })
   },
 }
 </script>
