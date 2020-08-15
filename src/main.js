@@ -15,6 +15,12 @@ const config = {
 }
 firebase.initializeApp(config)
 
-createApp(App)
-  .use(router)
-  .mount("#app")
+let app = ""
+
+firebase.auth().onAuthStateChanged(() => {
+  if (!app) {
+    app = createApp(App)
+      .use(router)
+      .mount("#app")
+  }
+})
